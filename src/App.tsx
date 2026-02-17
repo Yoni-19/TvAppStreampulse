@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Series from './pages/Series';
 import Profile from './pages/Profile';
 import { PageRoute } from './types';
+import Favorites from './pages/Favorites';
+import Details from './pages/Details';
 
 const App: React.FC = () => {
   return (
@@ -15,6 +17,8 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path={`/${PageRoute.SERIES}`} element={<Series />} />
           <Route path={`/${PageRoute.PROFILE}`} element={<Profile />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/details/:type/:id" element={<Details />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>

@@ -2,8 +2,12 @@
 import React from 'react';
 import { FAVORITES, RECENT_WATCHED, NEW_RELEASES } from '../constants';
 import MediaCard from '../components/MediaCard';
+import { useNavigate } from 'react-router-dom';
 
 const Profile: React.FC = () => {
+
+  const navigate = useNavigate();
+
   return (
     <div className="space-y-8 px-6 pt-12">
       <header className="flex items-center justify-between">
@@ -48,7 +52,9 @@ const Profile: React.FC = () => {
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-white">My Favorites</h2>
-          <button className="text-sm text-primary font-medium">See all</button>
+          <button 
+          onClick={() => navigate('/favorites')}
+          className="text-sm text-primary font-medium">See all</button>
         </div>
         <div className="flex gap-4 overflow-x-auto no-scrollbar -mx-6 px-6">
           {FAVORITES.map(item => (

@@ -1,14 +1,26 @@
 
 import React from 'react';
 import { MediaItem } from '../types';
+import { cn } from '../lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface MediaCardProps {
   item: MediaItem;
   type?: 'poster' | 'landscape' | 'wide-landscape';
   showProgress?: boolean;
+  className?: string;
 }
 
-const MediaCard: React.FC<MediaCardProps> = ({ item, type = 'poster', showProgress = false }) => {
+const MediaCard: React.FC<MediaCardProps> = ({ item, type = 'poster', showProgress = false, className }) => {
+
+  const navigate = useNavigate(); // <--- Hook
+
+  const handleClick = () => {
+    // Si el item tiene tipo (movie/tv), navegamos. Si no, asumimos 'movie' por defecto.
+    const mediaType = item.type || 'movie'; 
+    navigate(`/details/${mediaType}/${item.id}`);
+  };
+
   const getAspectRatio = () => {
     switch (type) {
       case 'landscape': return 'aspect-video';
@@ -17,8 +29,16 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, type = 'poster', showProgre
     }
   };
 
+  const defaultWidth = type === 'poster' ? 'w-36' : type === 'landscape' ? 'w-[calc(50%-8px)]' : 'w-full';
+
   return (
-    <div className={`flex-shrink-0 group cursor-pointer transition-transform duration-300 hover:scale-[1.02] ${type === 'poster' ? 'w-36' : type === 'landscape' ? 'w-[calc(50%-8px)]' : 'w-full'}`}>
+    <div 
+    onClick={handleClick}
+    className={cn(
+      "flex-shrink-0 group cursor-pointer transition-transform duration-300 hover:scale-[1.02]",
+      defaultWidth,
+      className // Esto permitirá sobrescribir el ancho con "w-full"
+    )}>
       <div className={`relative ${getAspectRatio()} rounded-2xl overflow-hidden bg-slate-800`}>
         <img 
           src={item.image} 

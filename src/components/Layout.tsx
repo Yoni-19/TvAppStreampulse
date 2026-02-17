@@ -2,23 +2,30 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { PageRoute } from '../types';
+import { cn } from '../lib/utils';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const currentPath = location.pathname.substring(1) || PageRoute.HOME;
 
   const NavItem = ({ route, icon, label }: { route: PageRoute, icon: string, label: string }) => {
-    const isActive = currentPath === route;
+    const isActive = currentPath === route || (route === PageRoute.HOME && currentPath === '');
     return (
       <Link 
         to={`/${route === PageRoute.HOME ? '' : route}`}
-        className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'active-pill' : 'text-slate-400'}`}
+        className={cn(
+          "flex items-center gap-2 px-4 py-3 rounded-full transition-all duration-300", // Flex row siempre
+          isActive 
+            ? "bg-primary/20 text-primary" 
+            : "text-slate-400 hover:text-white hover:bg-white/5"
+        )}
       >
-        <div className={`px-5 py-2 rounded-full flex items-center gap-2 ${isActive ? 'bg-nav-blue text-primary' : ''}`}>
-          <span className="material-symbols-outlined text-[26px]">{icon}</span>
-          {isActive && <span className="text-sm font-semibold">{label}</span>}
-        </div>
-        {!isActive && <span className="text-[10px] font-medium">{label}</span>}
+        <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}>
+          {icon}
+        </span>
+        <span className={cn("text-sm font-medium", isActive ? "font-bold" : "")}>
+          {label}
+        </span>
       </Link>
     );
   };

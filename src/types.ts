@@ -4,12 +4,14 @@ export interface MediaItem {
   title: string;
   subtitle: string;
   image: string;
+  poster?: string; 
   rating?: number;
   year?: string;
   genre?: string;
   progress?: number;
   timeRemaining?: string;
   isNew?: boolean;
+  type?: 'movie'|'tv';
 }
 
 export interface UserStats {
