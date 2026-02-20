@@ -32,7 +32,7 @@ export const useFavorites = () => {
 
   const toggleFavorite = (item: FavoriteItem) => {
     setFavorites(prev => {
-      const exists = prev.some(f => f.id === item.id);
+      const exists = prev.some(f => f.id === item.id); //devuelve un booleano
       if (exists) {
         return prev.filter(f => f.id !== item.id);
       }

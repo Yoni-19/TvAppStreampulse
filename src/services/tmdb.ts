@@ -68,6 +68,6 @@ export const tmdbService = {
   
   // Búsqueda (útil para el futuro)
   search: async (query: string) => {
-    return fetchTMDB(`/searchKp/multi?query=${encodeURIComponent(query)}`);
+    return fetchTMDB(`/search/multi?query=${encodeURIComponent(query)}`);
   }
 };

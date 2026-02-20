@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { tmdbService, getImageUrl } from '../services/tmdb';
+import { useFavorites } from '@/hooks/useFavorites';
 import MediaCard from '../components/MediaCard';
 
 const Details: React.FC = () => {
   const { type, id } = useParams<{ type: 'movie' | 'tv', id: string }>();
   const navigate = useNavigate();
+
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const isSaved = id ? isFavorite(id) : false;
   
   const [details, setDetails] = useState<any>(null);
   const [cast, setCast] = useState<any[]>([]);
@@ -47,6 +51,17 @@ const Details: React.FC = () => {
   const runtime = type === 'movie' 
     ? `${Math.floor(details.runtime / 60)}h ${details.runtime % 60}m`
     : `${details.number_of_seasons} Temporadas`;
+
+  const handleToggleList = () => {
+    // Nos aseguramos de tener la ID y el tipo
+    if (id && type) {
+      // Usamos el "interruptor" pasándole el objeto exacto que pide
+      toggleFavorite({
+        id: id,
+        type: type as 'movie' | 'tv'
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background-dark text-white pb-32 relative overflow-hidden">
@@ -99,14 +114,28 @@ const Details: React.FC = () => {
 
         {/* Botones de Acción */}
         <div className="flex gap-3 mb-8">
-           <button className="flex-1 bg-primary text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition shadow-lg shadow-primary/25">
+
+           {/* <button className="flex-1 bg-primary text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition shadow-lg shadow-primary/25">
               <span className="material-symbols-outlined fill-current">play_arrow</span>
               Reproducir
+           </button> */}
+
+
+           <button 
+             onClick={handleToggleList}
+             className={`flex-1 backdrop-blur-md text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition ${
+               isSaved 
+                 ? 'bg-white/30 border border-white/50' // Estilo si YA está en favoritos
+                 : 'bg-white/10 hover:bg-white/20'      // Estilo normal
+             }`}
+           >
+              <span className="material-symbols-outlined">
+                {isSaved ? 'check' : 'add'}
+              </span>
+              {isSaved ? 'En Mi Lista' : 'Mi Lista'}
            </button>
-           <button className="flex-1 bg-white/10 backdrop-blur-md text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-white/20 transition">
-              <span className="material-symbols-outlined">add</span>
-              Mi Lista
-           </button>
+
+           
         </div>
 
         {/* Sinopsis */}
