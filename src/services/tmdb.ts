@@ -21,7 +21,12 @@ interface TMDBMovie {
 
 // Función genérica para fetch
 async function fetchTMDB(endpoint: string) {
-  const response = await fetch(`${BASE_URL}${endpoint}?api_key=${API_KEY}&language=es-ES`);
+  // Verificamos si el endpoint ya tiene un "?"
+  // Si ya lo tiene, usamos "&" para unir. Si no, usamos "?".
+  const separator = endpoint.includes('?') ? '&' : '?';
+  
+  const response = await fetch(`${BASE_URL}${endpoint}${separator}api_key=${API_KEY}&language=es-ES`);
+  
   if (!response.ok) throw new Error('Error fetching data from TMDB');
   return response.json();
 }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'; // Importar Link
 import { tmdbService, getImageUrl } from '../services/tmdb'; // Importar servicio
 import MediaCard from '../components/MediaCard';
 import { MediaItem, PageRoute } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Carousel,
@@ -14,6 +15,9 @@ import {
 import Autoplay from "embla-carousel-autoplay" // Si quieres autoplay (opcional)
 
 const Home: React.FC = () => {
+
+  const navigate = useNavigate();
+
   const [heroMovies, setHeroMovies] = useState<MediaItem[]>([]);
   const [trending, setTrending] = useState<MediaItem[]>([]);
   const [popular, setPopular] = useState<MediaItem[]>([]);
@@ -65,7 +69,10 @@ const Home: React.FC = () => {
     <div className="space-y-6 pb-24">
       {/* HEADER / MENÚ SUPERIOR */}
       <header className="px-6 pt-12 pb-2 flex items-center justify-between sticky top-0 bg-background-dark/80 backdrop-blur-lg z-30 transition-all">
-        <button className="p-2 -ml-2 text-slate-400 hover:text-white transition-colors">
+        <button
+          onClick = {() => navigate('/search')} 
+          className="p-2 -ml-2 text-slate-400 hover:text-white transition-colors"
+        >
           <span className="material-symbols-outlined">search</span>
         </button>
         
