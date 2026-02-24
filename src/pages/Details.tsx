@@ -67,7 +67,7 @@ const Details: React.FC = () => {
     <div className="min-h-screen bg-background-dark text-white pb-32 relative overflow-hidden">
       {/* 1. HERO BACKGROUND */}
       <div className="relative h-[60vh] w-full">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background-dark/60 to-background-dark z-10"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-background-dark/60 to-background-dark z-10"></div>
         <img 
           src={getImageUrl(details.backdrop_path)} 
           alt={title} 
@@ -149,7 +149,7 @@ const Details: React.FC = () => {
            <h3 className="font-bold text-lg mb-4 text-white">Reparto Principal</h3>
            <div className="flex gap-4 overflow-x-auto no-scrollbar -mx-6 px-6 pb-4">
               {cast.map(actor => (
-                <div key={actor.id} className="w-24 flex-shrink-0 text-center">
+                <div key={actor.id} className="w-24 shrink-0 text-center">
                    <div className="w-20 h-20 mx-auto rounded-full overflow-hidden mb-2 border-2 border-white/10">
                       <img 
                         src={getImageUrl(actor.profile_path)} 

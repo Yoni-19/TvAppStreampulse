@@ -74,5 +74,21 @@ export const tmdbService = {
   // Búsqueda (útil para el futuro)
   search: async (query: string) => {
     return fetchTMDB(`/search/multi?query=${encodeURIComponent(query)}`);
+  },
+
+  getPopularSeries: async () => {
+    return fetchTMDB('/tv/popular');
+  },
+
+  getTopRatedSeries: async () => {
+    return fetchTMDB('/tv/top_rated');
+  },
+
+  getOnTheAirSeries: async () => {
+    return fetchTMDB('/tv/on_the_air'); // Series que se están emitiendo ahora
+  },
+  
+  getAiringTodaySeries: async () => {
+    return fetchTMDB('/tv/airing_today'); // Episodios que salen hoy
   }
 };
