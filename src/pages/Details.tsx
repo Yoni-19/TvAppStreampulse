@@ -6,19 +6,24 @@ import MediaCard from '../components/MediaCard';
 
 const Details: React.FC = () => {
   const { type, id } = useParams<{ type: 'movie' | 'tv', id: string }>();
+  console.log(useParams);
+  
   const navigate = useNavigate();
 
   const { toggleFavorite, isFavorite } = useFavorites();
   const isSaved = id ? isFavorite(id) : false;
   
-  const [details, setDetails] = useState<any>(null);
+  const [details, setDetails] = useState<any[]>(null);
   const [cast, setCast] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     const fetchData = async () => {
+
       if (!type || !id) return;
       setLoading(true);
+
       try {
         const [detailsData, creditsData] = await Promise.all([
           tmdbService.getDetails(type, id),
@@ -32,10 +37,14 @@ const Details: React.FC = () => {
         setLoading(false);
       }
     };
+
     fetchData();
     window.scrollTo(0, 0); // Scroll al top al entrar
+
   }, [type, id]);
 
+  //console.log(details);
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-background-dark flex justify-center items-center">
@@ -62,6 +71,9 @@ const Details: React.FC = () => {
       });
     }
   };
+
+  
+  
 
   return (
     <div className="min-h-screen bg-background-dark text-white pb-32 relative overflow-hidden">

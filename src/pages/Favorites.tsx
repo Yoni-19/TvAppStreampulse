@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { tmdbService, getImageUrl } from '../services/tmdb';
 import { useFavorites } from '../hooks/useFavorites';
 import MediaCard from '../components/MediaCard';
-import { MediaItem } from '../types';
+import { MediaItem } from '../interfaces/types';
 
 const Favorites: React.FC = () => {
   const navigate = useNavigate();

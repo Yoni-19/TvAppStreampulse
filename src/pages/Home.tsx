@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // Importar Link
 import { tmdbService, getImageUrl } from '../services/tmdb'; // Importar servicio
 import MediaCard from '../components/MediaCard';
-import { MediaItem, PageRoute } from '../types';
+import { MediaItem, PageRoute } from '../interfaces/types';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -100,17 +100,17 @@ const Home: React.FC = () => {
             plugins={[Autoplay({ delay: 4000 })]}
             opts={{ align: "start", loop: true }}
           >
-            <CarouselContent className="-ml-0">
+            <CarouselContent className="ml-0">
               {heroMovies.map((movie) => (
                 <CarouselItem key={movie.id} className="pl-0 basis-full">
-                  <div className="relative w-full aspect-[4/5] sm:aspect-video">
+                  <div className="relative w-full aspect-4/5 sm:aspect-video">
                     {/* Imagen de fondo con gradiente */}
                     <img 
                       src={movie.image} 
                       alt={movie.title} 
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/20 to-transparent"></div>
+                    <div className="absolute inset-0 bg-linear-to-t from-background-dark via-background-dark/20 to-transparent"></div>
                     
                     {/* Información sobre la imagen */}
                     <div className="absolute bottom-0 left-0 p-6 w-full">
@@ -152,7 +152,7 @@ const Home: React.FC = () => {
           </div>
           <div className="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6">
             {trending.map(item => (
-              <div key={item.id} className="w-36 flex-shrink-0">
+              <div key={item.id} className="w-36 shrink-0">
                  <MediaCard item={{...item, image: item.poster || item.image}} type="poster" />
               </div>
             ))}
@@ -167,7 +167,7 @@ const Home: React.FC = () => {
           </div>
           <div className="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6">
              {popular.map(item => (
-                <div key={item.id} className="w-[80vw] sm:w-[400px] flex-shrink-0">
+                <div key={item.id} className="w-[80vw] sm:w-100 shrink-0">
                    <MediaCard item={item} type="landscape" className="w-full" />
                 </div>
              ))}

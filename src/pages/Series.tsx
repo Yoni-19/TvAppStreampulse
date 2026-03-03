@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { tmdbService, getImageUrl } from '../services/tmdb';
 import MediaCard from '../components/MediaCard';
-import { MediaItem } from '../types';
+import { MediaItem } from '../interfaces/types';
 import {
   Carousel,
   CarouselContent,
@@ -77,11 +77,11 @@ const Series: React.FC = () => {
             plugins={[Autoplay({ delay: 5000 })]}
             opts={{ align: "start", loop: true }}
           >
-            <CarouselContent className="-ml-0">
+            <CarouselContent className="ml-0">
               {heroSeries.map((serie) => (
                 <CarouselItem key={serie.id} className="pl-0 basis-full">
                   <div 
-                    className="relative w-full aspect-[4/5] sm:aspect-video cursor-pointer"
+                    className="relative w-full aspect-4/5 sm:aspect-video cursor-pointer"
                     onClick={() => navigate(`/details/tv/${serie.id}`)} // Clic para ver detalles
                   >
                     <img 
@@ -89,7 +89,7 @@ const Series: React.FC = () => {
                       alt={serie.title} 
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/20 to-transparent"></div>
+                    <div className="absolute inset-0 bg-linear-to-t from-background-dark via-background-dark/20 to-transparent"></div>
                     
                     <div className="absolute bottom-0 left-0 p-6 w-full">
                         <div className="flex items-center gap-2 mb-2">
@@ -118,7 +118,7 @@ const Series: React.FC = () => {
           </div>
           <div className="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6">
              {popular.map(item => (
-                <div key={item.id} className="w-[80vw] sm:w-[300px] flex-shrink-0">
+                <div key={item.id} className="w-[80vw] sm:w-75 shrink-0">
                    {/* Usamos formato landscape para variar un poco de la Home */}
                    <MediaCard item={item} type="landscape" className="w-full" />
                 </div>

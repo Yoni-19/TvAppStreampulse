@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFavorites } from '../hooks/useFavorites';
 import { tmdbService, getImageUrl } from '../services/tmdb';
-import { MediaItem } from '../types';
+import { MediaItem } from '../interfaces/types';
 import MediaCard from '../components/MediaCard';
 
 const Profile: React.FC = () => {

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { PageRoute } from '../types';
+import { PageRoute } from '../interfaces/types';
 import { cn } from '../lib/utils';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

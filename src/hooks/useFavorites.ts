@@ -1,11 +1,10 @@
 // src/hooks/useFavorites.ts
+
+import { FavoriteItem } from '@/interfaces/types';
 import { useState, useEffect } from 'react';
 
 // Estructura mínima para guardar: ID y Tipo
-export interface FavoriteItem {
-  id: string;
-  type: 'movie' | 'tv';
-}
+
 
 export const useFavorites = () => {
   const [favorites, setFavorites] = useState<FavoriteItem[]>(() => {
@@ -36,7 +35,7 @@ export const useFavorites = () => {
       if (exists) {
         return prev.filter(f => f.id !== item.id);
       }
-      return [...prev, item];
+      return [item, ...prev];
     });
   };
 

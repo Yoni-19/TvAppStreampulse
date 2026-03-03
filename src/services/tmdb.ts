@@ -8,17 +8,6 @@ export const getImageUrl = (path: string | null) => {
   return path ? `${IMAGE_BASE_URL}${path}` : 'https://placehold.co/500x750?text=No+Image';
 };
 
-// Tipos básicos para la respuesta de TMDB
-interface TMDBMovie {
-  id: number;
-  title?: string;
-  name?: string; // Series usan 'name'
-  poster_path: string | null;
-  vote_average: number;
-  overview: string;
-  media_type?: 'movie' | 'tv';
-}
-
 // Función genérica para fetch
 async function fetchTMDB(endpoint: string) {
   // Verificamos si el endpoint ya tiene un "?"
@@ -28,6 +17,7 @@ async function fetchTMDB(endpoint: string) {
   const response = await fetch(`${BASE_URL}${endpoint}${separator}api_key=${API_KEY}&language=es-ES`);
   
   if (!response.ok) throw new Error('Error fetching data from TMDB');
+  
   return response.json();
 }
 

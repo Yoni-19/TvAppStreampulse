@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { tmdbService, getImageUrl } from '../services/tmdb';
 import MediaCard from '../components/MediaCard';
-import { MediaItem } from '../types';
+import { MediaItem } from '../interfaces/types';
 
 const Search: React.FC = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 
-import { MediaItem } from './types';
+import { MediaItem } from './interfaces/types';
 
 export const HERO_MOVIE: MediaItem = {
   id: 'h1',

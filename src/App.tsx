@@ -5,7 +5,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import Series from './pages/Series';
 import Profile from './pages/Profile';
-import { PageRoute } from './types';
+import { PageRoute } from './interfaces/types';
 import Favorites from './pages/Favorites';
 import Details from './pages/Details';
 import Search from './pages/Search';

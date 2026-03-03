@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MediaItem } from '../types';
+import { MediaItem } from '../interfaces/types';
 import { cn } from '../lib/utils';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,7 +35,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, type = 'poster', showProgre
     <div 
     onClick={handleClick}
     className={cn(
-      "flex-shrink-0 group cursor-pointer transition-transform duration-300 hover:scale-[1.02]",
+      "shrink-0 group cursor-pointer transition-transform duration-300 hover:scale-[1.02]",
       defaultWidth,
       className // Esto permitirá sobrescribir el ancho con "w-full"
     )}>
