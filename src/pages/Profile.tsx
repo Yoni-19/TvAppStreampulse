@@ -65,6 +65,12 @@ const Profile: React.FC = () => {
     fetchData();
   }, [favorites]); // <--- Se ejecuta cada vez que cambias un favorito
 
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated'); // Borramos la sesión
+    // AÑADIMOS replace: true
+    navigate('/login', { replace: true }); 
+  };
+
   return (
     <div className="min-h-screen bg-background-dark pb-32">
       
@@ -83,8 +89,12 @@ const Profile: React.FC = () => {
             <p className="text-slate-400 text-sm">Miembro Premium</p>
           </div>
         </div>
-        <button className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition">
-          <span className="material-symbols-outlined">settings</span>
+        <button 
+          onClick={handleLogout}
+          title="Cerrar Sesión"
+          className="w-10 h-10 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition"
+        >
+          <span className="material-symbols-outlined">logout</span>
         </button>
       </div>
 

@@ -8,6 +8,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const currentPath = location.pathname.substring(1) || PageRoute.HOME;
 
+  const isLoginPage = location.pathname === '/login';
+
   const NavItem = ({ route, icon, label }: { route: PageRoute, icon: string, label: string }) => {
     const isActive = currentPath === route || (route === PageRoute.HOME && currentPath === '');
     return (
@@ -32,14 +34,17 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="flex justify-center bg-background-dark min-h-screen">
-      <div className="w-full max-w-[430px] relative pb-32">
+      <div className="w-full max-w-107.5 relative pb-32">
         {children}
         
-        <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-background-dark/80 backdrop-blur-2xl border-t border-white/5 px-6 pt-4 pb-8 flex justify-around items-center z-50">
-          <NavItem route={PageRoute.HOME} icon="home" label="Home" />
-          <NavItem route={PageRoute.SERIES} icon="live_tv" label="Series" />
-          <NavItem route={PageRoute.PROFILE} icon="person" label="Perfil" />
-        </nav>
+        {/* Validamos que NO sea la página de login para mostrar el menú */}
+        {!isLoginPage && (
+          <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-107.5 bg-background-dark/80 backdrop-blur-2xl border-t border-white/5 px-6 pt-4 pb-8 flex justify-around items-center z-50">
+            <NavItem route={PageRoute.HOME} icon="home" label="Home" />
+            <NavItem route={PageRoute.SERIES} icon="live_tv" label="Series" />
+            <NavItem route={PageRoute.PROFILE} icon="person" label="Perfil" />
+          </nav>
+        )}
       </div>
     </div>
   );
