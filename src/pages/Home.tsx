@@ -66,17 +66,16 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 pb-24">
+    <div className= "relative">
       {/* HEADER / MENÚ SUPERIOR */}
-      <header className="px-6 pt-12 pb-2 flex items-center justify-between sticky top-0 bg-background-dark/80 backdrop-blur-lg z-30 transition-all">
+      {/* <header className="px-6 pt-12 pb-2 flex items-center justify-between sticky top-0 bg-background-dark/80 backdrop-blur-lg z-30 transition-all">
         <button
           onClick = {() => navigate('/search')} 
           className="p-2 -ml-2 text-slate-400 hover:text-white transition-colors"
         >
           <span className="material-symbols-outlined">search</span>
         </button>
-        
-        {/* Enlaces de navegación superiores */}
+
         <nav className="flex gap-6 text-sm font-medium">
           <Link to="/" className="text-white border-b-2 border-primary pb-1">
             Inicio
@@ -84,13 +83,29 @@ const Home: React.FC = () => {
           <Link to={`/${PageRoute.SERIES}`} className="text-slate-400 hover:text-slate-200 transition-colors">
             Series
           </Link>
-          {/* "Mi Lista" lleva a Perfil como solicitaste */}
+          
           <Link to={`/${PageRoute.PROFILE}`} className="text-slate-400 hover:text-slate-200 transition-colors">
             Mi lista
           </Link>
         </nav>
         
-        <div className="w-6"></div> {/* Espaciador para equilibrar el icono de búsqueda */}
+        <div className="w-6"></div> 
+      </header> */}
+
+      {/* HEADER SÓLIDO (Logo y utilidades) */}
+      <header className="sticky top-0 z-50 flex justify-between items-center px-6 pt-8 pb-4 bg-background-dark/90 backdrop-blur-lg border-b border-white/5">
+        {/* Logo de la App */}
+        <div className="flex items-center gap-2">
+          <span className="material-symbols-outlined text-primary text-3xl">play_circle</span>
+          <span className="text-white font-extrabold text-xl tracking-wide">
+            StreamPulse
+          </span>
+        </div>
+        
+        {/* Iconos de utilidad (Ej: Transmitir a TV) */}
+        <button className="text-slate-400 hover:text-white transition">
+          <span className="material-symbols-outlined text-[26px]">cast</span>
+        </button>
       </header>
 
       <main className="space-y-8">

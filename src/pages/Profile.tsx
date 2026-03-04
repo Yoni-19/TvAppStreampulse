@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFavorites } from '../hooks/useFavorites';
 import { tmdbService, getImageUrl } from '../services/tmdb';
@@ -15,6 +15,54 @@ const Profile: React.FC = () => {
   const [recommendations, setRecommendations] = useState<MediaItem[]>([]);
   // Estado para "Recently Watched" (Simulado con datos reales)
   const [recent, setRecent] = useState<MediaItem[]>([]);
+
+  // Añade esto debajo de tus otros useState
+  const [showSettings, setShowSettings] = useState(false);
+
+  // 1. Creamos la referencia
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const [activeModal, setActiveModal] = useState<'none' | 'edit' | 'settings'>('none');
+
+  // Estados para la información del usuario
+  // Estados para la información del usuario con lectura inicial de LocalStorage
+  const [userName, setUserName] = useState(() => {
+    return localStorage.getItem('userName') || 'Alex Johnson';
+  });
+
+  const [userEmail, setUserEmail] = useState(() => {
+    return localStorage.getItem('userEmail') || 'alex@ejemplo.com';
+  });
+
+  // Estados para Ajustes (con persistencia)
+  const [pushNotifications, setPushNotifications] = useState(() => {
+    return localStorage.getItem('pushNotifications') === 'true'; 
+  });
+
+  const [wifiOnly, setWifiOnly] = useState(() => {
+    return localStorage.getItem('wifiOnly') === 'true';
+  });
+
+
+  // 2. El guardián que vigila los clics
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Si el clic ocurrió y NO fue dentro de nuestro contenedor 'menuRef', lo cerramos
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowSettings(false);
+      }
+    };
+
+    // Si el menú está abierto, empezamos a escuchar los clics en la pantalla
+    if (showSettings) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Limpieza vital: dejamos de escuchar cuando el componente se desmonta o el menú se cierra
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSettings]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,24 +125,70 @@ const Profile: React.FC = () => {
       {/* 1. HEADER DEL PERFIL */}
       <div className="px-6 pt-10 pb-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-linear-to-tr from-primary to-purple-400 p-0.5">
-            <img 
-              src="https://i.pravatar.cc/150?img=11" // Avatar aleatorio de calidad
-              alt="User" 
-              className="w-full h-full rounded-full object-cover border-2 border-background-dark"
-            />
+          
+          {/* CONTENEDOR RELATIVO (Para el menú flotante) */}
+          <div className="relative" ref = {menuRef}>
+            <button 
+              onClick={() => setShowSettings(!showSettings)}
+              className="w-16 h-16 rounded-full bg-linear-to-tr from-primary to-purple-400 p-0.5 cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+            >
+              <img 
+                src="https://i.pravatar.cc/150?img=11" 
+                alt="User" 
+                className="w-full h-full rounded-full object-cover border-2 border-background-dark"
+              />
+            </button>
+
+            {/* EL MENÚ FLOTANTE */}
+            {showSettings && (
+              <div className="absolute top-20 left-0 w-48 bg-slate-800 border border-white/10 rounded-xl shadow-2xl py-2 z-50">
+                <button 
+                  onClick={() => {
+                    setActiveModal('edit');
+                    setShowSettings(false); // Cierra el menú al hacer clic
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 flex items-center gap-3 transition"
+                >
+                  <span className="material-symbols-outlined text-[18px]">person</span>
+                  Editar Perfil
+                </button>
+
+                <button 
+                  onClick={() => {
+                    setActiveModal('settings');
+                    setShowSettings(false);
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 flex items-center gap-3 transition"
+                >
+                  <span className="material-symbols-outlined text-[18px]">settings</span>
+                  Ajustes
+                </button>
+                
+                <div className="h-px bg-white/10 my-1"></div>
+                
+                <button 
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-3 transition"
+                >
+                  <span className="material-symbols-outlined text-[18px]">logout</span>
+                  Cerrar Sesión
+                </button>
+              </div>
+            )}
           </div>
+
           <div>
-            <h1 className="text-xl font-bold text-white">Alex Johnson</h1>
+            <h1 className="text-xl font-bold text-white">{userName}</h1>
             <p className="text-slate-400 text-sm">Miembro Premium</p>
           </div>
         </div>
+
+        {/* Campanita de notificaciones (reemplaza al botón de logout suelto) */}
         <button 
-          onClick={handleLogout}
-          title="Cerrar Sesión"
-          className="w-10 h-10 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition"
+          title="Notificaciones"
+          className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition"
         >
-          <span className="material-symbols-outlined">logout</span>
+          <span className="material-symbols-outlined">notifications</span>
         </button>
       </div>
 
@@ -193,6 +287,143 @@ const Profile: React.FC = () => {
           ))}
         </div>
       </section>
+
+      {/* ---------------- MODALES SUPERPUESTOS ---------------- */}
+      {activeModal !== 'none' && (
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 px-4 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-white/10 rounded-2xl w-full max-w-sm p-6 shadow-2xl relative">
+            
+            {/* Botón de cerrar (X) universal para ambos modales */}
+            <button 
+              onClick={() => setActiveModal('none')}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white transition"
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+
+            {/* --- CONTENIDO: EDITAR PERFIL --- */}
+            {activeModal === 'edit' && (
+              <div>
+
+                <h2 className="text-xl font-bold text-white mb-6">Editar Perfil</h2>
+
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault(); // Evita que la página se recargue
+                    const formData = new FormData(e.currentTarget);
+                    const newName = formData.get('nombre') as string;
+                    const newEmail = formData.get('correo') as string;
+                    
+                    // 1. Actualizamos los estados (lo que ya hacíamos)
+                    setUserName(newName);
+                    setUserEmail(newEmail);
+                    
+                    // 2. ¡NUEVO! Guardamos físicamente en el navegador
+                    localStorage.setItem('userName', newName);
+                    localStorage.setItem('userEmail', newEmail);
+                    
+                    // 3. Cerramos el modal
+                    setActiveModal('none');
+                  }}
+                  className="space-y-4"
+                >
+
+                  <div>
+
+                    <label className="text-xs text-slate-400 mb-1 block">Nombre de usuario</label>
+                    <input 
+                      type="text"
+                      name="nombre" 
+                      defaultValue={userName}
+                      className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white outline-none focus:border-primary transition" 
+                    />
+
+                  </div>
+
+                  <div>
+
+                    <label className="text-xs text-slate-400 mb-1 block">Correo electrónico</label>
+                    <input 
+                      type="email" 
+                      name="correo"
+                      defaultValue={userEmail}
+                      className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white outline-none focus:border-primary transition" 
+                    />
+
+                  </div>
+
+                  <button 
+
+
+                    type = "submit"
+                    className="w-full mt-4 bg-primary text-white font-semibold py-2 rounded-lg hover:bg-primary/80 transition"
+
+                  >
+                    Guardar Cambios
+                  </button>
+
+                </form>
+
+              </div>
+            )}
+
+            {/* --- CONTENIDO: AJUSTES --- */}
+            {activeModal === 'settings' && (
+              <div>
+
+                <h2 className="text-xl font-bold text-white mb-6">Ajustes</h2>
+
+                <div className="space-y-4">
+
+                  <div className="flex items-center justify-between p-3 bg-slate-800 rounded-lg border border-slate-700">
+
+                    <span className="text-sm text-white">Notificaciones Push</span>
+
+                    <input 
+                      type="checkbox" 
+                      checked={pushNotifications}
+                      onChange={(e) => {
+                        const val = e.target.checked;
+                        setPushNotifications(val);
+                        localStorage.setItem('pushNotifications', String(val));
+                      }}
+                      className="toggle-checkbox w-10 h-5 accent-primary cursor-pointer"                       
+                    />
+
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-slate-800 rounded-lg border border-slate-700">
+
+                    <span className="text-sm text-white">Descargas solo con Wi-Fi</span>
+
+                    <input 
+                      type="checkbox" 
+                      checked={wifiOnly}
+                      onChange={(e) => {
+                        const val = e.target.checked;
+                        setWifiOnly(val);
+                        localStorage.setItem('wifiOnly', String(val));
+                      }}
+                      className="toggle-checkbox w-10 h-5 accent-primary cursor-pointer" 
+                    />
+
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-slate-800 rounded-lg border border-slate-700">
+
+                    <span className="text-sm text-white">Idioma de la app</span>
+                    <span className="text-sm text-primary cursor-pointer">Español</span>
+
+                  </div>
+
+                </div>
+
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
 
     </div>
   );
