@@ -50,9 +50,12 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] p-4">
       <div className="w-full max-w-md p-8 space-y-6 bg-secondary/20 rounded-2xl border border-white/10">
+
         <h1 className="text-3xl font-bold text-center">StreamPulse Login</h1>
         
         <form action={formAction} className="space-y-4">
+
+
           {/* Mostramos mensaje de error si existe en el estado */}
           {state.error && (
             <div className="p-3 text-sm bg-destructive/20 border border-destructive text-destructive-foreground rounded-lg">
@@ -78,7 +81,10 @@ export default function LoginPage() {
           </div>
 
           <SubmitButton />
+
+          
         </form>
+
       </div>
     </div>
   );

@@ -94,18 +94,37 @@ const Home: React.FC = () => {
 
       {/* HEADER SÓLIDO (Logo y utilidades) */}
       <header className="sticky top-0 z-50 flex justify-between items-center px-6 pt-8 pb-4 bg-background-dark/90 backdrop-blur-lg border-b border-white/5">
+
         {/* Logo de la App */}
         <div className="flex items-center gap-2">
+          
           <span className="material-symbols-outlined text-primary text-3xl">play_circle</span>
           <span className="text-white font-extrabold text-xl tracking-wide">
             StreamPulse
           </span>
+
         </div>
         
-        {/* Iconos de utilidad (Ej: Transmitir a TV) */}
-        <button className="text-slate-400 hover:text-white transition">
-          <span className="material-symbols-outlined text-[26px]">cast</span>
-        </button>
+        {/* Iconos de utilidad (Búsqueda y Transmitir) */}
+        <div className="flex items-center gap-4">
+
+          <button 
+            onClick={() => navigate('/search')}
+            className="text-slate-400 hover:text-white transition"
+          >
+
+            <span className="material-symbols-outlined text-[26px]">search</span>
+
+          </button>
+          
+          <button className="text-slate-400 hover:text-white transition">
+
+            <span className="material-symbols-outlined text-[26px]">cast</span>
+
+          </button>
+          
+        </div>
+
       </header>
 
       <main className="space-y-8">

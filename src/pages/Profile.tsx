@@ -237,55 +237,85 @@ const Profile: React.FC = () => {
 
       {/* 4. RECENTLY WATCHED (DISEÑO MEJORADO) */}
       <section className="px-6 mb-8">
+
         <h2 className="text-lg font-bold text-white mb-4">Continuar Viendo</h2>
+
         <div className="space-y-4">
+
           {recent.map((item, idx) => (
+
             <div key={item.id} className="flex gap-4 bg-white/5 rounded-xl p-3 pr-4 items-center border border-white/5 hover:bg-white/10 transition group cursor-pointer">
               {/* Thumbnail con botón Play */}
               <div className="relative w-24 aspect-video rounded-lg overflow-hidden shrink-0">
+
                 <img src={item.image} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition"/>
+
                 <div className="absolute inset-0 flex items-center justify-center">
+
                    <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+
                       <span className="material-symbols-outlined text-white text-sm">play_arrow</span>
+                      
                    </div>
+
                 </div>
+                
                 {/* Barra de progreso */}
+
                 <div className="absolute bottom-0 left-0 h-1 bg-white/30 w-full">
+
                   <div className="h-full bg-primary" style={{ width: idx === 0 ? '75%' : '30%' }}></div>
+
                 </div>
+
               </div>
               
               {/* Info */}
               <div className="flex-1 min-w-0">
+
                 <h3 className="text-white font-medium truncate">{item.title}</h3>
                 <p className="text-slate-400 text-xs mb-2">Restan {20 + idx * 10} min</p>
+
               </div>
+
               <span className="material-symbols-outlined text-slate-500">more_vert</span>
+
             </div>
+
           ))}
+
         </div>
+
       </section>
 
       {/* 5. NEW RECOMMENDATIONS (DISEÑO MEJORADO) */}
       <section className="pl-6">
+
         <h2 className="text-lg font-bold text-white mb-4">Recomendado para ti</h2>
+
         <div className="flex gap-4 overflow-x-auto pb-4 pr-6 no-scrollbar">
+
           {recommendations.map((item) => (
              <div 
                key={item.id} 
                onClick={() => navigate(`/details/movie/${item.id}`)}
                className="relative w-40 aspect-video rounded-xl overflow-hidden shrink-0 group cursor-pointer"
              >
+
                 <img src={item.image} className="w-full h-full object-cover group-hover:scale-110 transition duration-500"/>
+
                 <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent flex items-end p-3">
                    <div>
                       <span className="bg-yellow-400 text-black text-[9px] font-bold px-1.5 py-0.5 rounded uppercase mb-1 inline-block">Nuevo</span>
                       <p className="text-white text-xs font-bold truncate w-32">{item.title}</p>
                    </div>
                 </div>
+
              </div>
           ))}
+
         </div>
+
       </section>
 
       {/* ---------------- MODALES SUPERPUESTOS ---------------- */}
